@@ -53,17 +53,10 @@ export const subscribeToOrders = (callback, statusFilter = null) => {
   return onSnapshot(q, (snapshot) => {
     if (statusFilter) {
       // Client-side filtering to avoid index requirements
-      const filteredDocs = snapshot.docs.filter(doc => doc.data().status === statusFilter);
-      
-      // Create a snapshot-like object with proper forEach method
       const filteredSnapshot = {
-        docs: filteredDocs,
-        size: filteredDocs.length,
-        empty: filteredDocs.length === 0,
-        forEach: (fn) => filteredDocs.forEach(fn),
-        metadata: snapshot.metadata
+        ...snapshot,
+        docs: snapshot.docs.filter(doc => doc.data().status === statusFilter)
       };
-      
       callback(filteredSnapshot);
     } else {
       callback(snapshot);
@@ -81,21 +74,13 @@ export const subscribeToActiveOrders = (callback) => {
 
   return onSnapshot(q, (snapshot) => {
     // Filter in client-side to avoid Firestore index requirements
-    const filteredDocs = snapshot.docs.filter(doc => {
-      const status = doc.data().status;
-      return ['new', 'in_progress', 'ready'].includes(status);
-    });
-    
-    // Create a snapshot-like object with proper forEach method
     const filteredSnapshot = {
-      docs: filteredDocs,
-      size: filteredDocs.length,
-      empty: filteredDocs.length === 0,
-      forEach: (fn) => filteredDocs.forEach(fn),
-      // Copy other snapshot properties
-      metadata: snapshot.metadata
+      ...snapshot,
+      docs: snapshot.docs.filter(doc => {
+        const status = doc.data().status;
+        return ['new', 'in_progress', 'ready'].includes(status);
+      })
     };
-    
     callback(filteredSnapshot);
   });
 };
