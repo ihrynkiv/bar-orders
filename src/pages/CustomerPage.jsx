@@ -67,18 +67,16 @@ const CustomerPage = () => {
               {selectedCategory && (
                 <button
                   onClick={handleBackToCategories}
-                  className="text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-primary-600 hover:text-primary-700 p-1"
                 >
-                  ← Назад до категорій
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                  </svg>
                 </button>
               )}
             </div>
             
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600">
-                Привіт, <span className="font-medium">{currentUser.name}</span>!
-              </div>
-              
               {orderItems.length > 0 && (
                 <button
                   onClick={() => setShowOrderSummary(true)}
