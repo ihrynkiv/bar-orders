@@ -7,11 +7,18 @@ const TVPage = () => {
 
   useEffect(() => {
     const unsubscribe = subscribeToActiveOrders((snapshot) => {
-      const ordersData = []
-      snapshot.forEach((doc) => {
-        ordersData.push({ id: doc.id, ...doc.data() })
-      })
-      setOrders(ordersData)
+      try {
+        const ordersData = []
+        if (snapshot && snapshot.forEach) {
+          snapshot.forEach((doc) => {
+            ordersData.push({ id: doc.id, ...doc.data() })
+          })
+        }
+        setOrders(ordersData)
+      } catch (error) {
+        console.error('Error processing orders:', error)
+        setOrders([])
+      }
     })
 
     // Update time every second
