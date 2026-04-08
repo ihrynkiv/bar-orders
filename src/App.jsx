@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { OrderProvider } from './hooks/useOrder'
 import { MenuProvider } from './hooks/useMenu'
 import CustomerPage from './pages/CustomerPage'
