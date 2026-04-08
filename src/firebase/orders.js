@@ -45,29 +45,42 @@ export const updateOrderStatus = async (orderId, status) => {
 
 // Subscribe to orders (real-time)
 export const subscribeToOrders = (callback, statusFilter = null) => {
-  let q = query(
+  const q = query(
     collection(db, ORDERS_COLLECTION), 
     orderBy('createdAt', 'asc')
   );
   
-  if (statusFilter) {
-    q = query(
-      collection(db, ORDERS_COLLECTION),
-      where('status', '==', statusFilter),
-      orderBy('createdAt', 'asc')
-    );
-  }
-
-  return onSnapshot(q, callback);
+  return onSnapshot(q, (snapshot) => {
+    if (statusFilter) {
+      // Client-side filtering to avoid index requirements
+      const filteredSnapshot = {
+        ...snapshot,
+        docs: snapshot.docs.filter(doc => doc.data().status === statusFilter)
+      };
+      callback(filteredSnapshot);
+    } else {
+      callback(snapshot);
+    }
+  });
 };
 
-// Subscribe to all active orders for barista/TV
+// Subscribe to all active orders for barista/TV - simplified to avoid index requirements
 export const subscribeToActiveOrders = (callback) => {
+  // Simple query without compound where+orderBy to avoid index requirements
   const q = query(
     collection(db, ORDERS_COLLECTION),
-    where('status', 'in', ['new', 'in_progress', 'ready']),
     orderBy('createdAt', 'asc')
   );
 
-  return onSnapshot(q, callback);
+  return onSnapshot(q, (snapshot) => {
+    // Filter in client-side to avoid Firestore index requirements
+    const filteredSnapshot = {
+      ...snapshot,
+      docs: snapshot.docs.filter(doc => {
+        const status = doc.data().status;
+        return ['new', 'in_progress', 'ready'].includes(status);
+      })
+    };
+    callback(filteredSnapshot);
+  });
 };
