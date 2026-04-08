@@ -7,20 +7,12 @@ const BaristaPage = () => {
 
   useEffect(() => {
     const unsubscribe = subscribeToActiveOrders((snapshot) => {
-      try {
-        const ordersData = []
-        if (snapshot && snapshot.forEach) {
-          snapshot.forEach((doc) => {
-            ordersData.push({ id: doc.id, ...doc.data() })
-          })
-        }
-        setOrders(ordersData)
-        setLoading(false)
-      } catch (error) {
-        console.error('Error processing orders:', error)
-        setOrders([])
-        setLoading(false)
-      }
+      const ordersData = []
+      snapshot.forEach((doc) => {
+        ordersData.push({ id: doc.id, ...doc.data() })
+      })
+      setOrders(ordersData)
+      setLoading(false)
     })
 
     return () => unsubscribe()
