@@ -1,0 +1,416 @@
+{
+  "users": [
+    {
+      "id": "user1",
+      "name": "Олександр",
+      "avatar": "/avatars/oleksandr.jpg"
+    },
+    {
+      "id": "user2", 
+      "name": "Марія",
+      "avatar": "/avatars/maria.jpg"
+    },
+    {
+      "id": "user3",
+      "name": "Андрій", 
+      "avatar": "/avatars/andriy.jpg"
+    },
+    {
+      "id": "user4",
+      "name": "Катерина",
+      "avatar": "/avatars/kateryna.jpg"
+    }
+  ],
+  "categories": [
+    {
+      "id": "coffee",
+      "name": "Кава",
+      "icon": "☕",
+      "subcategories": [
+        {
+          "id": "espresso_drinks",
+          "name": "Еспресо напої"
+        },
+        {
+          "id": "filter_coffee", 
+          "name": "Фільтр кава"
+        },
+        {
+          "id": "cold_coffee",
+          "name": "Холодна кава"
+        }
+      ],
+      "drinks": [
+        {
+          "id": "espresso",
+          "name": "Еспресо",
+          "subcategory": "espresso_drinks",
+          "description": "Класичний італійський еспресо з насиченим смаком",
+          "ingredients": ["Кавові зерна арабіка"],
+          "parameters": [],
+          "highlights": {
+            "flavor": "Насичений, горіховий",
+            "origin": "Ефіопія",
+            "roast_level": "Середнє обсмаження",
+            "caffeine": "Високий"
+          }
+        },
+        {
+          "id": "cappuccino",
+          "name": "Капучино",
+          "subcategory": "espresso_drinks", 
+          "description": "Еспресо з молочною піною і молоком",
+          "ingredients": ["Еспресо", "Молоко", "Молочна піна"],
+          "parameters": [
+            {
+              "id": "milk_type",
+              "name": "Тип молока",
+              "type": "select",
+              "required": true,
+              "options": [
+                {"value": "cow", "label": "Коров'яче", "default": true},
+                {"value": "oat", "label": "Вівсяне"},
+                {"value": "almond", "label": "Мигдальне"},
+                {"value": "coconut", "label": "Кокосове"}
+              ]
+            }
+          ],
+          "highlights": {
+            "flavor": "Кремовий, молочний",
+            "origin": "Італія", 
+            "caffeine": "Середній",
+            "temperature": "Гаряче"
+          }
+        },
+        {
+          "id": "filter_ethiopian",
+          "name": "Фільтр Ефіопія",
+          "subcategory": "filter_coffee",
+          "description": "Світле обсмаження ефіопської арабіки з фруктовими нотами",
+          "ingredients": ["100% арабіка Ефіопія", "Вода"],
+          "parameters": [
+            {
+              "id": "method",
+              "name": "Метод заварювання", 
+              "type": "select",
+              "required": true,
+              "options": [
+                {"value": "v60", "label": "V60", "default": true},
+                {"value": "chemex", "label": "Chemex"},
+                {"value": "aeropress", "label": "AeroPress"}
+              ]
+            }
+          ],
+          "highlights": {
+            "flavor": "Фруктовий, яскравий",
+            "origin": "Ефіопія",
+            "roast_level": "Світле",
+            "caffeine": "Високий"
+          }
+        },
+        {
+          "id": "cold_brew",
+          "name": "Колд Брю",
+          "subcategory": "cold_coffee",
+          "description": "Холодна кава повільного заварювання",
+          "ingredients": ["Кава грубого помелу", "Холодна вода"],
+          "parameters": [
+            {
+              "id": "ice",
+              "name": "Лід",
+              "type": "boolean",
+              "label": "З льодом",
+              "default": true
+            }
+          ],
+          "highlights": {
+            "flavor": "М'який, солодкуватий",
+            "origin": "Бразилія",
+            "caffeine": "Середній",
+            "temperature": "Холодне"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tea",
+      "name": "Чай",
+      "icon": "🍵",
+      "subcategories": [
+        {
+          "id": "green_tea",
+          "name": "Зелений чай"
+        },
+        {
+          "id": "black_tea",
+          "name": "Чорний чай"
+        },
+        {
+          "id": "herbal_tea",
+          "name": "Трав'яний чай"
+        }
+      ],
+      "drinks": [
+        {
+          "id": "matcha_latte",
+          "name": "Матча Латте",
+          "subcategory": "green_tea",
+          "description": "Японський зелений чай матча з молоком",
+          "ingredients": ["Порошок матча", "Молоко", "Цукор"],
+          "parameters": [
+            {
+              "id": "milk_type",
+              "name": "Тип молока",
+              "type": "select",
+              "required": true,
+              "options": [
+                {"value": "cow", "label": "Коров'яче"},
+                {"value": "oat", "label": "Вівсяне", "default": true},
+                {"value": "almond", "label": "Мигдальне"},
+                {"value": "coconut", "label": "Кокосове"}
+              ]
+            },
+            {
+              "id": "temperature",
+              "name": "Температура",
+              "type": "select",
+              "options": [
+                {"value": "hot", "label": "Гаряче", "default": true},
+                {"value": "iced", "label": "Холодне"}
+              ]
+            },
+            {
+              "id": "sweetness",
+              "name": "Солодкість",
+              "type": "select",
+              "options": [
+                {"value": "none", "label": "Без цукру"},
+                {"value": "light", "label": "Мало солодке", "default": true},
+                {"value": "medium", "label": "Середнє"},
+                {"value": "sweet", "label": "Солодке"}
+              ]
+            }
+          ],
+          "highlights": {
+            "flavor": "Солодкий, трав'янистий, умамі",
+            "origin": "Японія",
+            "caffeine": "Середній",
+            "antioxidants": "Високі"
+          }
+        },
+        {
+          "id": "earl_grey",
+          "name": "Ерл Грей",
+          "subcategory": "black_tea",
+          "description": "Чорний чай з бергамотом",
+          "ingredients": ["Чорний чай", "Олія бергамоту"],
+          "parameters": [
+            {
+              "id": "milk",
+              "name": "Молоко",
+              "type": "boolean",
+              "label": "Додати молоко",
+              "default": false
+            },
+            {
+              "id": "lemon",
+              "name": "Лимон", 
+              "type": "boolean",
+              "label": "З лимоном",
+              "default": false
+            }
+          ],
+          "highlights": {
+            "flavor": "Цитрусовий, квітковий",
+            "origin": "Англія",
+            "caffeine": "Середній",
+            "brewing_temp": "90°C"
+          }
+        },
+        {
+          "id": "chamomile",
+          "name": "Ромашка",
+          "subcategory": "herbal_tea",
+          "description": "Заспокійливий трав'яний чай з ромашки",
+          "ingredients": ["Сушені квітки ромашки"],
+          "parameters": [
+            {
+              "id": "honey",
+              "name": "Мед",
+              "type": "boolean",
+              "label": "З медом",
+              "default": false
+            }
+          ],
+          "highlights": {
+            "flavor": "М'який, квітковий",
+            "origin": "Єгипет",
+            "caffeine": "Без кофеїну",
+            "effect": "Заспокійливий"
+          }
+        }
+      ]
+    },
+    {
+      "id": "alcohol",
+      "name": "Алкоголь",
+      "icon": "🍸",
+      "subcategories": [
+        {
+          "id": "cocktails",
+          "name": "Коктейлі"
+        },
+        {
+          "id": "beer", 
+          "name": "Пиво"
+        },
+        {
+          "id": "wine",
+          "name": "Вино"
+        }
+      ],
+      "drinks": [
+        {
+          "id": "whiskey_sour",
+          "name": "Віскі Сауер",
+          "subcategory": "cocktails",
+          "description": "Класичний кислий коктейль на основі віскі",
+          "ingredients": ["Віскі", "Лимонний сік", "Цукровий сироп", "Яєчний білок"],
+          "parameters": [
+            {
+              "id": "whiskey_type",
+              "name": "Тип віскі",
+              "type": "select",
+              "required": true,
+              "options": [
+                {"value": "bourbon", "label": "Бурбон", "default": true},
+                {"value": "rye", "label": "Житній віскі"},
+                {"value": "scotch", "label": "Скотч"}
+              ]
+            },
+            {
+              "id": "egg_white",
+              "name": "Яєчний білок",
+              "type": "boolean",
+              "label": "З яєчним білком",
+              "default": true
+            }
+          ],
+          "highlights": {
+            "alcohol_content": "22%",
+            "taste_profile": "Кисло-солодкий",
+            "strength": "Міцний",
+            "serving": "В склянці з льодом"
+          }
+        },
+        {
+          "id": "mojito",
+          "name": "Мохіто",
+          "subcategory": "cocktails",
+          "description": "Освіжаючий коктейль з ромом і м'ятою",
+          "ingredients": ["Білий ром", "М'ята", "Лайм", "Цукор", "Содова"],
+          "parameters": [
+            {
+              "id": "mint_amount",
+              "name": "Кількість м'яти",
+              "type": "select",
+              "options": [
+                {"value": "light", "label": "Мало"},
+                {"value": "medium", "label": "Помірно", "default": true},
+                {"value": "extra", "label": "Багато"}
+              ]
+            }
+          ],
+          "highlights": {
+            "alcohol_content": "15%",
+            "taste_profile": "Освіжаючий, м'ятний",
+            "strength": "Легкий",
+            "serving": "З льодом і м'ятою"
+          }
+        },
+        {
+          "id": "craft_ipa",
+          "name": "Craft IPA",
+          "subcategory": "beer",
+          "description": "Крафтове пиво India Pale Ale з хмелевим смаком",
+          "ingredients": ["Солод", "Хміль", "Дріжджі", "Вода"],
+          "parameters": [],
+          "highlights": {
+            "alcohol_content": "6.5%",
+            "taste_profile": "Гіркий, хмелевий",
+            "origin": "Україна",
+            "serving": "Охолоджене"
+          }
+        }
+      ]
+    },
+    {
+      "id": "non_alcoholic",
+      "name": "Безалкогольні",
+      "icon": "🥤",
+      "subcategories": [
+        {
+          "id": "fresh_juices",
+          "name": "Свіжі соки"
+        },
+        {
+          "id": "smoothies",
+          "name": "Смузі" 
+        },
+        {
+          "id": "soft_drinks",
+          "name": "Газовані напої"
+        }
+      ],
+      "drinks": [
+        {
+          "id": "orange_juice",
+          "name": "Апельсиновий сік",
+          "subcategory": "fresh_juices",
+          "description": "Свіжовичавлений апельсиновий сік",
+          "ingredients": ["Свіжі апельсини"],
+          "parameters": [
+            {
+              "id": "ice",
+              "name": "Лід",
+              "type": "boolean",
+              "label": "З льодом",
+              "default": true
+            }
+          ],
+          "highlights": {
+            "flavor": "Солодкий, цитрусовий",
+            "vitamins": "Вітамін C",
+            "calories": "110 ккал",
+            "temperature": "Холодний"
+          }
+        },
+        {
+          "id": "berry_smoothie",
+          "name": "Ягідний Смузі",
+          "subcategory": "smoothies",
+          "description": "Смузі з мішаних ягід і йогуртом",
+          "ingredients": ["Полуниця", "Чорниця", "Малина", "Йогурт", "Мед"],
+          "parameters": [
+            {
+              "id": "yogurt_type",
+              "name": "Тип йогурту",
+              "type": "select",
+              "options": [
+                {"value": "greek", "label": "Грецький", "default": true},
+                {"value": "regular", "label": "Звичайний"},
+                {"value": "coconut", "label": "Кокосовий"}
+              ]
+            }
+          ],
+          "highlights": {
+            "flavor": "Солодкий, ягідний",
+            "vitamins": "Вітаміни A, C",
+            "calories": "150 ккал",
+            "antioxidants": "Високі"
+          }
+        }
+      ]
+    }
+  ]
+}
