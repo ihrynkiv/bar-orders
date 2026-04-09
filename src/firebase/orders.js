@@ -51,15 +51,34 @@ export const subscribeToOrders = (callback, statusFilter = null) => {
   );
   
   return onSnapshot(q, (snapshot) => {
-    if (statusFilter) {
-      // Client-side filtering to avoid index requirements
-      const filteredSnapshot = {
-        ...snapshot,
-        docs: snapshot.docs.filter(doc => doc.data().status === statusFilter)
-      };
-      callback(filteredSnapshot);
-    } else {
-      callback(snapshot);
+    try {
+      if (statusFilter) {
+        // Client-side filtering to avoid index requirements
+        const filteredDocs = snapshot.docs.filter(doc => doc.data().status === statusFilter);
+        
+        // Create a snapshot-like object with proper forEach method
+        const filteredSnapshot = {
+          docs: filteredDocs,
+          size: filteredDocs.length,
+          empty: filteredDocs.length === 0,
+          forEach: (fn) => filteredDocs.forEach(fn),
+          metadata: snapshot.metadata || {}
+        };
+        
+        callback(filteredSnapshot);
+      } else {
+        callback(snapshot);
+      }
+    } catch (error) {
+      console.error('Error in subscribeToOrders:', error);
+      // Return empty snapshot-like object on error
+      callback({
+        docs: [],
+        size: 0,
+        empty: true,
+        forEach: (fn) => [],
+        metadata: {}
+      });
     }
   });
 };
@@ -73,14 +92,33 @@ export const subscribeToActiveOrders = (callback) => {
   );
 
   return onSnapshot(q, (snapshot) => {
-    // Filter in client-side to avoid Firestore index requirements
-    const filteredSnapshot = {
-      ...snapshot,
-      docs: snapshot.docs.filter(doc => {
+    try {
+      // Filter in client-side to avoid Firestore index requirements
+      const filteredDocs = snapshot.docs.filter(doc => {
         const status = doc.data().status;
         return ['new', 'in_progress', 'ready'].includes(status);
-      })
-    };
-    callback(filteredSnapshot);
+      });
+      
+      // Create a snapshot-like object with proper forEach method
+      const filteredSnapshot = {
+        docs: filteredDocs,
+        size: filteredDocs.length,
+        empty: filteredDocs.length === 0,
+        forEach: (fn) => filteredDocs.forEach(fn),
+        metadata: snapshot.metadata || {}
+      };
+      
+      callback(filteredSnapshot);
+    } catch (error) {
+      console.error('Error in subscribeToActiveOrders:', error);
+      // Return empty snapshot-like object on error
+      callback({
+        docs: [],
+        size: 0,
+        empty: true,
+        forEach: (fn) => [],
+        metadata: {}
+      });
+    }
   });
 };
