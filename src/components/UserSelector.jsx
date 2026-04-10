@@ -18,8 +18,16 @@ const UserSelector = () => {
             onClick={() => selectUser(user)}
             className="card hover:shadow-lg transition-all duration-200 transform hover:scale-105 text-center p-6"
           >
-            <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
-              {!!user?.avatar ? <img src={user.avatar} alt={`${user.name} avatar`}/> : user.name.charAt(0).toUpperCase()}
+            <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+              {!!user?.avatar ? (
+                <img 
+                  src={user.avatar} 
+                  alt={`${user.name} avatar`}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                user.name.charAt(0).toUpperCase()
+              )}
             </div>
             <h3 className="text-lg font-semibold text-gray-900">
               {user.name}
