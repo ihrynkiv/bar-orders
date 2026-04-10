@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 const OrderContext = createContext()
 
@@ -10,14 +10,42 @@ export const useOrder = () => {
   return context
 }
 
+const STORAGE_KEY = 'bar-order-user'
+
 export const OrderProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [orderItems, setOrderItems] = useState([])
+
+  // Load user from localStorage on component mount
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem(STORAGE_KEY)
+      if (savedUser) {
+        const userData = JSON.parse(savedUser)
+        setCurrentUser(userData)
+      }
+    } catch (error) {
+      console.error('Error loading user from localStorage:', error)
+      // Clear corrupted data
+      localStorage.removeItem(STORAGE_KEY)
+    }
+  }, [])
 
   const selectUser = useCallback((user) => {
     setCurrentUser(user)
     // Clear previous orders when switching users
     setOrderItems([])
+    
+    // Save user to localStorage or clear if null
+    if (user) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
+      } catch (error) {
+        console.error('Error saving user to localStorage:', error)
+      }
+    } else {
+      localStorage.removeItem(STORAGE_KEY)
+    }
   }, [])
 
   const addToOrder = useCallback((drink, parameters = {}, comment = '') => {
