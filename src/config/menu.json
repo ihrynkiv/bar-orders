@@ -3,7 +3,7 @@
     {
       "id": "daryna",
       "name": "Дарина",
-      "avatar": "/avatars/oleksandr.jpg"
+      "avatar": "/avatars/daryna.jpg"
     },
     {
       "id": "dania",
@@ -13,12 +13,12 @@
     {
       "id": "polina",
       "name": "Поліна",
-      "avatar": "/avatars/maria.jpg"
+      "avatar": "/avatars/polina.jpg"
     },
     {
       "id": "maryna",
       "name": "Марина",
-      "avatar": "/avatars/andriy.jpg"
+      "avatar": "/avatars/maryna.jpg"
     },
     {
       "id": "max",
@@ -41,24 +41,24 @@
       "avatar": "/avatars/kateryna.jpg"
     },
     {
-      "id": "lila",
+      "id": "lilya",
       "name": "Ліля",
-      "avatar": "/avatars/kateryna.jpg"
+      "avatar": "/avatars/lilya.jpg"
     },
     {
       "id": "tina",
       "name": "Тіна",
-      "avatar": "/avatars/maria.jpg"
+      "avatar": "/avatars/tina.jpg"
     },
     {
       "id": "roksa",
       "name": "Рокса",
-      "avatar": "/avatars/maria.jpg"
+      "avatar": "/avatars/roksa.jpg"
     },
     {
       "id": "ivan",
       "name": "Іван",
-      "avatar": "/avatars/maria.jpg"
+      "avatar": "/avatars/ivan.jpg"
     }
   ],
   "categories": [
