@@ -86,14 +86,42 @@ const CustomerPage = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         {!selectedCategory ? (
-          <CategoryGrid onCategorySelect={handleCategorySelect} />
+          <>
+            <CategoryGrid onCategorySelect={handleCategorySelect} />
+            {/* Footer with user switch option */}
+            <footer className="mt-12 pt-8 border-t border-gray-200">
+              <div className="text-center">
+                <button
+                  onClick={() => selectUser(null)}
+                  className="text-gray-500 hover:text-gray-700 text-sm flex items-center justify-center space-x-2 mx-auto transition-colors"
+                >
+                  <span>👤</span>
+                  <span>Змінити користувача</span>
+                </button>
+              </div>
+            </footer>
+          </>
         ) : (
-          <DrinksList
-            category={selectedCategory}
-            selectedSubcategory={selectedSubcategory}
-            onSubcategoryChange={setSelectedSubcategory}
-            onDrinkSelect={setSelectedDrink}
-          />
+          <>
+            <DrinksList
+              category={selectedCategory}
+              selectedSubcategory={selectedSubcategory}
+              onSubcategoryChange={setSelectedSubcategory}
+              onDrinkSelect={setSelectedDrink}
+            />
+            {/* Footer with user switch option */}
+            <footer className="mt-12 pt-8 border-t border-gray-200">
+              <div className="text-center">
+                <button
+                  onClick={() => selectUser(null)}
+                  className="text-gray-500 hover:text-gray-700 text-sm flex items-center justify-center space-x-2 mx-auto transition-colors"
+                >
+                  <span>👤</span>
+                  <span>Змінити користувача</span>
+                </button>
+              </div>
+            </footer>
+          </>
         )}
       </main>
 
@@ -108,17 +136,6 @@ const CustomerPage = () => {
       {showOrderSummary && (
         <OrderSummary onClose={() => setShowOrderSummary(false)} />
       )}
-
-      {/* Change User Button - Fixed at bottom */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <button
-          onClick={() => selectUser(null)}
-          className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-3 rounded-full shadow-lg transition-colors text-sm font-medium flex items-center space-x-2"
-        >
-          <span>👤</span>
-          <span>Змінити користувача</span>
-        </button>
-      </div>
     </div>
   )
 }
