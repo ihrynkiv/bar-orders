@@ -60,20 +60,10 @@ const CustomerPage = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4" onClick={handleBackToCategories}>
               <h1 className="text-2xl font-bold text-primary-700">
-                🍹 BarOrder
+                🍹 Бар
               </h1>
-              {selectedCategory && (
-                <button
-                  onClick={handleBackToCategories}
-                  className="text-primary-600 hover:text-primary-700 p-1"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-              )}
             </div>
 
             <div className="flex items-center space-x-4">
