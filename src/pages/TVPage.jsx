@@ -58,9 +58,9 @@ const TVPage = () => {
   const formatTime = (timestamp) => {
     if (!timestamp) return ''
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp)
-    return date.toLocaleTimeString('uk-UA', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return date.toLocaleTimeString('uk-UA', {
+      hour: '2-digit',
+      minute: '2-digit'
     })
   }
 
@@ -75,7 +75,7 @@ const TVPage = () => {
       {/* Header */}
       <header className="bg-primary-900 p-8 text-center">
         <h1 className="text-8xl font-bold text-white mb-4">
-          🍹 BarOrder Queue
+          🍹 Новосілля у Рокси та Івана! 🎉
         </h1>
         <div className="text-3xl font-mono text-primary-200">
           {currentTime.toLocaleTimeString('uk-UA')} • {currentTime.toLocaleDateString('uk-UA')}
@@ -104,9 +104,9 @@ const TVPage = () => {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {groupedOrders.ready.map(order => (
-                    <OrderCard 
-                      key={order.id} 
-                      order={order} 
+                    <OrderCard
+                      key={order.id}
+                      order={order}
                       getStatusColor={getStatusColor}
                       getStatusLabel={getStatusLabel}
                       formatTime={formatTime}
@@ -125,9 +125,9 @@ const TVPage = () => {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {groupedOrders.in_progress.map(order => (
-                    <OrderCard 
-                      key={order.id} 
-                      order={order} 
+                    <OrderCard
+                      key={order.id}
+                      order={order}
                       getStatusColor={getStatusColor}
                       getStatusLabel={getStatusLabel}
                       formatTime={formatTime}
@@ -145,9 +145,9 @@ const TVPage = () => {
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {groupedOrders.new.map(order => (
-                    <OrderCard 
-                      key={order.id} 
-                      order={order} 
+                    <OrderCard
+                      key={order.id}
+                      order={order}
                       getStatusColor={getStatusColor}
                       getStatusLabel={getStatusLabel}
                       formatTime={formatTime}
