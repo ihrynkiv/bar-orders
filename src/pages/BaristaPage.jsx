@@ -63,8 +63,8 @@ const BaristaPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
+    <div className="h-screen bg-gray-50 flex flex-col">
+      <header className="bg-white shadow-sm flex-shrink-0">
         <div className="container mx-auto px-6 py-4">
           <h1 className="text-3xl font-bold text-primary-700">
             👨‍🍳 Бариста - Управління замовленнями
@@ -72,17 +72,17 @@ const BaristaPage = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="container mx-auto px-6 py-8 flex-1 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
           {/* New Orders */}
-          <div className="bg-white rounded-lg shadow-sm">
-            <div className="p-6 border-b border-gray-200">
+          <div className="bg-white rounded-lg shadow-sm flex flex-col h-full">
+            <div className="p-6 border-b border-gray-200 flex-shrink-0">
               <h2 className="text-xl font-semibold text-blue-700 flex items-center">
                 <div className="w-4 h-4 bg-blue-500 rounded-full mr-3"></div>
                 Нові замовлення ({groupedOrders.new.length})
               </h2>
             </div>
-            <div className="p-6 space-y-4 max-h-96 overflow-y-auto">
+            <div className="p-6 space-y-4 flex-1 overflow-y-auto">
               {groupedOrders.new.map(order => (
                 <OrderCard 
                   key={order.id} 
@@ -101,14 +101,14 @@ const BaristaPage = () => {
           </div>
 
           {/* In Progress Orders */}
-          <div className="bg-white rounded-lg shadow-sm">
-            <div className="p-6 border-b border-gray-200">
+          <div className="bg-white rounded-lg shadow-sm flex flex-col h-full">
+            <div className="p-6 border-b border-gray-200 flex-shrink-0">
               <h2 className="text-xl font-semibold text-yellow-700 flex items-center">
                 <div className="w-4 h-4 bg-yellow-500 rounded-full mr-3"></div>
                 В процесі ({groupedOrders.in_progress.length})
               </h2>
             </div>
-            <div className="p-6 space-y-4 max-h-96 overflow-y-auto">
+            <div className="p-6 space-y-4 flex-1 overflow-y-auto">
               {groupedOrders.in_progress.map(order => (
                 <OrderCard 
                   key={order.id} 
@@ -127,14 +127,14 @@ const BaristaPage = () => {
           </div>
 
           {/* Ready Orders */}
-          <div className="bg-white rounded-lg shadow-sm">
-            <div className="p-6 border-b border-gray-200">
+          <div className="bg-white rounded-lg shadow-sm flex flex-col h-full">
+            <div className="p-6 border-b border-gray-200 flex-shrink-0">
               <h2 className="text-xl font-semibold text-green-700 flex items-center">
                 <div className="w-4 h-4 bg-green-500 rounded-full mr-3"></div>
                 Готові ({groupedOrders.ready.length})
               </h2>
             </div>
-            <div className="p-6 space-y-4 max-h-96 overflow-y-auto">
+            <div className="p-6 space-y-4 flex-1 overflow-y-auto">
               {groupedOrders.ready.map(order => (
                 <OrderCard 
                   key={order.id} 
