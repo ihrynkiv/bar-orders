@@ -9,7 +9,7 @@ import DrinkModal from '../components/DrinkModal'
 
 const CustomerPage = () => {
   const { loading } = useMenu()
-  const { currentUser, orderItems } = useOrder()
+  const { currentUser, orderItems, selectUser } = useOrder()
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedSubcategory, setSelectedSubcategory] = useState(null)
   const [selectedDrink, setSelectedDrink] = useState(null)
@@ -60,7 +60,7 @@ const CustomerPage = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4" onClick={handleBackToCategories}>
+            <div className="flex items-center space-x-4 cursor-pointer" onClick={handleBackToCategories}>
               <h1 className="text-2xl font-bold text-primary-700">
                 🍹 Бар меню
               </h1>
@@ -108,6 +108,17 @@ const CustomerPage = () => {
       {showOrderSummary && (
         <OrderSummary onClose={() => setShowOrderSummary(false)} />
       )}
+
+      {/* Change User Button - Fixed at bottom */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <button
+          onClick={() => selectUser(null)}
+          className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-3 rounded-full shadow-lg transition-colors text-sm font-medium flex items-center space-x-2"
+        >
+          <span>👤</span>
+          <span>Змінити користувача</span>
+        </button>
+      </div>
     </div>
   )
 }
