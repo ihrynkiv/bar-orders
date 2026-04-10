@@ -32,10 +32,10 @@ const CustomerPage = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              🍹 BarOrder
+              🍹 Новосілля
             </h1>
             <p className="text-gray-600">
-              Виберіть користувача для продовження
+              Вітаємо, оберіть себе зі списку, щоб почати замовлення!
             </p>
           </div>
           <UserSelector />
@@ -75,7 +75,7 @@ const CustomerPage = () => {
                 </button>
               )}
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {orderItems.length > 0 && (
                 <button
@@ -98,7 +98,7 @@ const CustomerPage = () => {
         {!selectedCategory ? (
           <CategoryGrid onCategorySelect={handleCategorySelect} />
         ) : (
-          <DrinksList 
+          <DrinksList
             category={selectedCategory}
             selectedSubcategory={selectedSubcategory}
             onSubcategoryChange={setSelectedSubcategory}
