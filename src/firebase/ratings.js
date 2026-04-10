@@ -37,17 +37,25 @@ export const addRating = async (drinkId, userId, userName, rating, comment = '')
 // Get ratings for a specific drink
 export const getDrinkRatings = async (drinkId) => {
   try {
-    const q = query(
-      collection(db, RATINGS_COLLECTION),
-      where('drinkId', '==', drinkId),
-      orderBy('createdAt', 'desc')
-    )
+    // Use simple query without compound index requirements
+    const q = query(collection(db, RATINGS_COLLECTION))
     
     const querySnapshot = await getDocs(q)
     const ratings = []
     
     querySnapshot.forEach((doc) => {
-      ratings.push({ id: doc.id, ...doc.data() })
+      const data = doc.data()
+      // Filter on client side to avoid compound index
+      if (data.drinkId === drinkId) {
+        ratings.push({ id: doc.id, ...data })
+      }
+    })
+    
+    // Sort on client side
+    ratings.sort((a, b) => {
+      const timeA = a.createdAt?.toDate?.() || new Date(a.createdAt || 0)
+      const timeB = b.createdAt?.toDate?.() || new Date(b.createdAt || 0)
+      return timeB - timeA // Descending order (newest first)
     })
     
     return ratings
@@ -59,23 +67,31 @@ export const getDrinkRatings = async (drinkId) => {
 
 // Subscribe to ratings for a specific drink
 export const subscribeToRatings = (drinkId, callback) => {
-  const q = query(
-    collection(db, RATINGS_COLLECTION),
-    where('drinkId', '==', drinkId),
-    orderBy('createdAt', 'desc')
-  )
+  // Use simple query without compound index requirements
+  const q = query(collection(db, RATINGS_COLLECTION))
   
   return onSnapshot(q, (snapshot) => {
     const ratings = []
     snapshot.forEach((doc) => {
       const data = doc.data()
-      ratings.push({ 
-        id: doc.id, 
-        ...data,
-        // Ensure createdAt is properly formatted
-        createdAt: data.createdAt instanceof Timestamp ? data.createdAt : null
-      })
+      // Filter on client side to avoid compound index
+      if (data.drinkId === drinkId) {
+        ratings.push({ 
+          id: doc.id, 
+          ...data,
+          // Ensure createdAt is properly formatted
+          createdAt: data.createdAt instanceof Timestamp ? data.createdAt : null
+        })
+      }
     })
+    
+    // Sort on client side
+    ratings.sort((a, b) => {
+      const timeA = a.createdAt?.toDate?.() || new Date(a.createdAt || 0)
+      const timeB = b.createdAt?.toDate?.() || new Date(b.createdAt || 0)
+      return timeB - timeA // Descending order (newest first)
+    })
+    
     callback(ratings)
   })
 }
@@ -128,21 +144,21 @@ export const getMultipleDrinksStats = async (drinkIds) => {
 // Check if user has already rated a drink
 export const getUserRatingForDrink = async (drinkId, userId) => {
   try {
-    const q = query(
-      collection(db, RATINGS_COLLECTION),
-      where('drinkId', '==', drinkId),
-      where('userId', '==', userId)
-    )
+    // Use simple query without compound index requirements
+    const q = query(collection(db, RATINGS_COLLECTION))
     
     const querySnapshot = await getDocs(q)
     
-    if (querySnapshot.empty) {
-      return null
-    }
+    // Filter on client side to avoid compound index
+    let userRating = null
+    querySnapshot.forEach((doc) => {
+      const data = doc.data()
+      if (data.drinkId === drinkId && data.userId === userId) {
+        userRating = { id: doc.id, ...data }
+      }
+    })
     
-    // Return the first (should be only) rating
-    const doc = querySnapshot.docs[0]
-    return { id: doc.id, ...doc.data() }
+    return userRating
   } catch (error) {
     console.error('Error getting user rating:', error)
     return null
