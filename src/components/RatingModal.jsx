@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useOrder } from '../hooks/useOrder'
-import { addRating } from '../firebase/ratings'
+import { submitRating } from '../firebase/ratings'
 import StarRating from './StarRating'
 
-const RatingModal = ({ drink, onClose, onRatingSubmitted }) => {
+const RatingModal = ({ drink, onClose, onRatingSubmitted, existingRating = null }) => {
   const { currentUser } = useOrder()
-  const [rating, setRating] = useState(0)
-  const [comment, setComment] = useState('')
+  const [rating, setRating] = useState(existingRating?.rating || 0)
+  const [comment, setComment] = useState(existingRating?.comment || '')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -27,7 +27,7 @@ const RatingModal = ({ drink, onClose, onRatingSubmitted }) => {
     setError('')
 
     try {
-      await addRating(drink.id, currentUser.id, currentUser.name, rating, comment)
+      await submitRating(drink.id, currentUser.id, currentUser.name, rating, comment)
       
       // Notify parent component
       if (onRatingSubmitted) {
@@ -50,7 +50,7 @@ const RatingModal = ({ drink, onClose, onRatingSubmitted }) => {
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-gray-900">
-              Оцінити напій
+              {existingRating ? 'Змінити оцінку' : 'Оцінити напій'}
             </h2>
             <button
               onClick={onClose}
@@ -133,7 +133,7 @@ const RatingModal = ({ drink, onClose, onRatingSubmitted }) => {
                 disabled={isSubmitting || rating === 0}
                 className="flex-1 px-4 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Збереження...' : 'Надіслати оцінку'}
+                {isSubmitting ? 'Збереження...' : (existingRating ? 'Оновити оцінку' : 'Надіслати оцінку')}
               </button>
             </div>
           </form>

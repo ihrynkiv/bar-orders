@@ -1,6 +1,8 @@
 import { 
   collection, 
   addDoc, 
+  doc,
+  updateDoc,
   query, 
   where, 
   getDocs, 
@@ -30,6 +32,43 @@ export const addRating = async (drinkId, userId, userName, rating, comment = '')
     return docRef.id
   } catch (error) {
     console.error('Error adding rating:', error)
+    throw error
+  }
+}
+
+// Update an existing rating
+export const updateRating = async (ratingId, rating, comment = '') => {
+  try {
+    const ratingData = {
+      rating: Number(rating),
+      comment: comment.trim(),
+      updatedAt: serverTimestamp()
+    }
+
+    await updateDoc(doc(db, RATINGS_COLLECTION, ratingId), ratingData)
+    return ratingId
+  } catch (error) {
+    console.error('Error updating rating:', error)
+    throw error
+  }
+}
+
+// Add or update rating (checks if user already has rating)
+export const submitRating = async (drinkId, userId, userName, rating, comment = '') => {
+  try {
+    // Check if user already has a rating for this drink
+    const existingRating = await getUserRatingForDrink(drinkId, userId)
+    
+    if (existingRating) {
+      // Update existing rating
+      await updateRating(existingRating.id, rating, comment)
+      return existingRating.id
+    } else {
+      // Create new rating
+      return await addRating(drinkId, userId, userName, rating, comment)
+    }
+  } catch (error) {
+    console.error('Error submitting rating:', error)
     throw error
   }
 }

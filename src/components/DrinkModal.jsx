@@ -325,6 +325,7 @@ const DrinkModal = ({ drink, onClose }) => {
           drink={drink}
           onClose={() => setShowRatingModal(false)}
           onRatingSubmitted={handleRatingSubmitted}
+          existingRating={userRating}
         />
       )}
     </div>
