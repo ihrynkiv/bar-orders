@@ -63,8 +63,8 @@ const BaristaPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+      <header className="bg-white shadow-sm flex-shrink-0">
         <div className="container mx-auto px-6 py-4">
           <h1 className="text-3xl font-bold text-primary-700">
             👨‍🍳 Бариста - Управління замовленнями
@@ -72,8 +72,8 @@ const BaristaPage = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8" style={{height: 'calc(100vh - 120px)'}}>
+      <main className="container mx-auto px-6 py-8 flex-1 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
           {/* New Orders */}
           <div className="bg-white rounded-lg shadow-sm flex flex-col h-full">
             <div className="p-6 border-b border-gray-200 flex-shrink-0">
