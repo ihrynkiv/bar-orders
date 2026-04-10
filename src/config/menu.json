@@ -1,24 +1,64 @@
 {
   "users": [
     {
-      "id": "user1",
-      "name": "Олександр",
+      "id": "daryna",
+      "name": "Дарина",
       "avatar": "/avatars/oleksandr.jpg"
     },
     {
-      "id": "user2", 
-      "name": "Марія",
+      "id": "dania",
+      "name": "Даня",
       "avatar": "/avatars/maria.jpg"
     },
     {
-      "id": "user3",
-      "name": "Андрій", 
+      "id": "polina",
+      "name": "Поліна",
+      "avatar": "/avatars/maria.jpg"
+    },
+    {
+      "id": "maryna",
+      "name": "Марина",
       "avatar": "/avatars/andriy.jpg"
     },
     {
-      "id": "user4",
-      "name": "Катерина",
+      "id": "max",
+      "name": "Максим",
       "avatar": "/avatars/kateryna.jpg"
+    },
+    {
+      "id": "mark",
+      "name": "Марк",
+      "avatar": "/avatars/kateryna.jpg"
+    },
+    {
+      "id": "maria",
+      "name": "Марія",
+      "avatar": "/avatars/kateryna.jpg"
+    },
+    {
+      "id": "olya",
+      "name": "Оля",
+      "avatar": "/avatars/kateryna.jpg"
+    },
+    {
+      "id": "lila",
+      "name": "Ліля",
+      "avatar": "/avatars/kateryna.jpg"
+    },
+    {
+      "id": "tina",
+      "name": "Тіна",
+      "avatar": "/avatars/maria.jpg"
+    },
+    {
+      "id": "roksa",
+      "name": "Рокса",
+      "avatar": "/avatars/maria.jpg"
+    },
+    {
+      "id": "ivan",
+      "name": "Іван",
+      "avatar": "/avatars/maria.jpg"
     }
   ],
   "categories": [
@@ -32,7 +72,7 @@
           "name": "Еспресо напої"
         },
         {
-          "id": "filter_coffee", 
+          "id": "filter_coffee",
           "name": "Фільтр кава"
         },
         {
@@ -58,7 +98,7 @@
         {
           "id": "cappuccino",
           "name": "Капучино",
-          "subcategory": "espresso_drinks", 
+          "subcategory": "espresso_drinks",
           "description": "Еспресо з молочною піною і молоком",
           "ingredients": ["Еспресо", "Молоко", "Молочна піна"],
           "parameters": [
@@ -77,7 +117,7 @@
           ],
           "highlights": {
             "flavor": "Кремовий, молочний",
-            "origin": "Італія", 
+            "origin": "Італія",
             "caffeine": "Середній",
             "temperature": "Гаряче"
           }
@@ -91,7 +131,7 @@
           "parameters": [
             {
               "id": "method",
-              "name": "Метод заварювання", 
+              "name": "Метод заварювання",
               "type": "select",
               "required": true,
               "options": [
@@ -214,7 +254,7 @@
             },
             {
               "id": "lemon",
-              "name": "Лимон", 
+              "name": "Лимон",
               "type": "boolean",
               "label": "З лимоном",
               "default": false
@@ -261,7 +301,7 @@
           "name": "Коктейлі"
         },
         {
-          "id": "beer", 
+          "id": "beer",
           "name": "Пиво"
         },
         {
@@ -355,7 +395,7 @@
         },
         {
           "id": "smoothies",
-          "name": "Смузі" 
+          "name": "Смузі"
         },
         {
           "id": "soft_drinks",
