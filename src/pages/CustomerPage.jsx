@@ -62,7 +62,7 @@ const CustomerPage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4" onClick={handleBackToCategories}>
               <h1 className="text-2xl font-bold text-primary-700">
-                🍹 Бар
+                🍹 Бар меню
               </h1>
             </div>
 
