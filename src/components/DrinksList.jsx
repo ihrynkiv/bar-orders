@@ -1,9 +1,21 @@
 import { useMenu } from '../hooks/useMenu'
+import { useRatings } from '../hooks/useRatings'
+import { useEffect } from 'react'
+import StarRating from './StarRating'
 
 const DrinksList = ({ category, selectedSubcategory, onSubcategoryChange, onDrinkSelect }) => {
   const { getDrinksByCategory } = useMenu()
+  const { loadRatingsStats } = useRatings()
   
   const drinks = getDrinksByCategory(category.id, selectedSubcategory)
+
+  // Load ratings stats when drinks change
+  useEffect(() => {
+    if (drinks && drinks.length > 0) {
+      const drinkIds = drinks.map(drink => drink.id)
+      loadRatingsStats(drinkIds)
+    }
+  }, [drinks, loadRatingsStats])
   
   const getHighlightColor = (key) => {
     const colorMap = {
@@ -89,7 +101,9 @@ const DrinksList = ({ category, selectedSubcategory, onSubcategoryChange, onDrin
 }
 
 const DrinkCard = ({ drink, onSelect, getHighlightColor }) => {
+  const { getRatingStats, hasRatings } = useRatings()
   const topHighlights = Object.entries(drink.highlights || {}).slice(0, 2)
+  const ratingStats = getRatingStats(drink.id)
 
   return (
     <div className="card hover:shadow-lg transition-all duration-200 cursor-pointer group"
@@ -97,12 +111,31 @@ const DrinkCard = ({ drink, onSelect, getHighlightColor }) => {
       
       {/* Drink Name */}
       <div className="mb-4">
-        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">
-          {drink.name}
-        </h3>
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary-700 transition-colors flex-1">
+            {drink.name}
+          </h3>
+          {hasRatings(drink.id) && (
+            <div className="ml-2 flex-shrink-0">
+              <StarRating
+                rating={ratingStats.averageRating}
+                size="sm"
+                readonly={true}
+                showLabel={false}
+              />
+            </div>
+          )}
+        </div>
         <p className="text-gray-600 text-sm line-clamp-2">
           {drink.description}
         </p>
+        {hasRatings(drink.id) && (
+          <div className="mt-2">
+            <p className="text-xs text-gray-500">
+              {ratingStats.averageRating.toFixed(1)} ⭐ ({ratingStats.totalRatings} {ratingStats.totalRatings === 1 ? 'оцінка' : 'оцінок'})
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Top Highlights */}

@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useOrder } from '../hooks/useOrder'
+import { useRatings } from '../hooks/useRatings'
+import { subscribeToRatings, getUserRatingForDrink, getDrinkRatingStats } from '../firebase/ratings'
+import StarRating from './StarRating'
+import RatingModal from './RatingModal'
 
 const DrinkModal = ({ drink, onClose }) => {
-  const { addToOrder } = useOrder()
+  const { addToOrder, currentUser } = useOrder()
+  const { updateDrinkStats } = useRatings()
   const [selectedParameters, setSelectedParameters] = useState({})
   const [comment, setComment] = useState('')
   const [errors, setErrors] = useState({})
+  const [showRatingModal, setShowRatingModal] = useState(false)
+  const [ratings, setRatings] = useState([])
+  const [userRating, setUserRating] = useState(null)
+  const [ratingStats, setRatingStats] = useState({ averageRating: 0, totalRatings: 0 })
 
   // Initialize parameters with default values
   useState(() => {
@@ -22,6 +31,40 @@ const DrinkModal = ({ drink, onClose }) => {
     })
     setSelectedParameters(defaults)
   }, [drink])
+
+  // Load ratings data
+  useEffect(() => {
+    let unsubscribeRatings = null
+
+    const loadData = async () => {
+      try {
+        // Subscribe to ratings
+        unsubscribeRatings = subscribeToRatings(drink.id, (ratingsData) => {
+          setRatings(ratingsData)
+        })
+
+        // Load user's existing rating
+        if (currentUser) {
+          const existingRating = await getUserRatingForDrink(drink.id, currentUser.id)
+          setUserRating(existingRating)
+        }
+
+        // Load rating stats
+        const stats = await getDrinkRatingStats(drink.id)
+        setRatingStats(stats)
+      } catch (error) {
+        console.error('Error loading rating data:', error)
+      }
+    }
+
+    loadData()
+
+    return () => {
+      if (unsubscribeRatings) {
+        unsubscribeRatings()
+      }
+    }
+  }, [drink.id, currentUser])
 
   const handleParameterChange = (paramId, value) => {
     setSelectedParameters(prev => ({
@@ -51,6 +94,39 @@ const DrinkModal = ({ drink, onClose }) => {
     if (validateParameters()) {
       addToOrder(drink, selectedParameters, comment)
       onClose()
+    }
+  }
+
+  const handleRatingSubmitted = async () => {
+    try {
+      // Reload rating stats and user rating
+      const stats = await getDrinkRatingStats(drink.id)
+      setRatingStats(stats)
+      updateDrinkStats(drink.id, stats)
+
+      if (currentUser) {
+        const existingRating = await getUserRatingForDrink(drink.id, currentUser.id)
+        setUserRating(existingRating)
+      }
+    } catch (error) {
+      console.error('Error reloading rating data:', error)
+    }
+  }
+
+  const formatTimeAgo = (timestamp) => {
+    if (!timestamp) return ''
+    
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp)
+    const now = new Date()
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60))
+    
+    if (diffInHours < 1) {
+      return 'Щойно'
+    } else if (diffInHours < 24) {
+      return `${diffInHours} год тому`
+    } else {
+      const diffInDays = Math.floor(diffInHours / 24)
+      return `${diffInDays} дн тому`
     }
   }
 
@@ -85,6 +161,21 @@ const DrinkModal = ({ drink, onClose }) => {
             </button>
           </div>
           <p className="text-gray-600 mt-2">{drink.description}</p>
+          
+          {/* Rating Summary */}
+          {ratingStats.totalRatings > 0 && (
+            <div className="mt-4 flex items-center space-x-4">
+              <StarRating
+                rating={ratingStats.averageRating}
+                size="md"
+                readonly={true}
+                showLabel={false}
+              />
+              <span className="text-sm text-gray-600">
+                {ratingStats.averageRating.toFixed(1)} ({ratingStats.totalRatings} {ratingStats.totalRatings === 1 ? 'оцінка' : 'оцінок'})
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="p-6 space-y-6">
@@ -160,6 +251,53 @@ const DrinkModal = ({ drink, onClose }) => {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
             />
           </div>
+
+          {/* Ratings Section */}
+          <div className="space-y-4 pt-6 border-t border-gray-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">Оцінки та відгуки</h3>
+              {currentUser && (
+                <button
+                  onClick={() => setShowRatingModal(true)}
+                  className="text-sm bg-primary-600 text-white px-3 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+                >
+                  {userRating ? 'Змінити оцінку' : 'Оцінити напій'}
+                </button>
+              )}
+            </div>
+
+            {ratings.length === 0 ? (
+              <div className="text-center py-8 bg-gray-50 rounded-lg">
+                <div className="text-4xl mb-2">⭐</div>
+                <p className="text-gray-600">Цей напій ще не має оцінок</p>
+                <p className="text-sm text-gray-500 mt-1">Будьте першим, хто оцінить його!</p>
+              </div>
+            ) : (
+              <div className="space-y-4 max-h-60 overflow-y-auto">
+                {ratings.map((rating) => (
+                  <div key={rating.id} className="bg-gray-50 rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-medium text-gray-900">{rating.userName}</span>
+                        <StarRating
+                          rating={rating.rating}
+                          size="sm"
+                          readonly={true}
+                          showLabel={false}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-500">
+                        {formatTimeAgo(rating.createdAt)}
+                      </span>
+                    </div>
+                    {rating.comment && (
+                      <p className="text-gray-700 text-sm mt-2">{rating.comment}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Footer */}
@@ -180,6 +318,15 @@ const DrinkModal = ({ drink, onClose }) => {
           </div>
         </div>
       </div>
+
+      {/* Rating Modal */}
+      {showRatingModal && (
+        <RatingModal
+          drink={drink}
+          onClose={() => setShowRatingModal(false)}
+          onRatingSubmitted={handleRatingSubmitted}
+        />
+      )}
     </div>
   )
 }
